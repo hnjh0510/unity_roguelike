@@ -6,21 +6,18 @@ using UnityEngine.SceneManagement;
 public class Potal : MonoBehaviour
 {
     public GameObject player;
-
-    // Start is called before the first frame update
+    public int sceneCount;
     void Start()
     {
         player = GameObject.FindWithTag("Player");
-        Scene scene = SceneManager.GetActiveScene();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        sceneCount = SceneManager.GetActiveScene().buildIndex;
     }
     private void OnTriggerEnter2D(Collider2D collision)//다음씬 넘어가기
     {
-        //SceneManager.LoadScene()
+        if (collision.tag == "Player")
+        {
+            sceneCount++;
+            SceneManager.LoadScene(sceneCount);
+        }
     }
 }

@@ -62,12 +62,12 @@ public class IsInside : MonoBehaviour/////////////////////////////Á¤ÁßÈ¯
         if ((playersInRoom > 0 && enemiesInRoom > 0))
         {
             GameObject.Find("GameObject").transform.Find("door").gameObject.SetActive(true);
-            Debug.Log("close");
+            //Debug.Log("close");
         }
         else
         {
             GameObject.Find("GameObject").transform.Find("door").gameObject.SetActive(false);
-            Debug.Log("open");
+            //Debug.Log("open");
         }
     }
 }
