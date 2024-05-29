@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -184,10 +185,28 @@ public class PlayerController : MonoBehaviour
             case Weapon.WeaponType.Sword1:
                 currentEffect = swordEffect;
                 break;
+            case Weapon.WeaponType.Sword2:
+                currentEffect = swordEffect;
+                break;
+            case Weapon.WeaponType.Sword3:
+                currentEffect = swordEffect;
+                break;
             case Weapon.WeaponType.Bow1:
                 currentEffect = bowEffect;
                 break;
+            case Weapon.WeaponType.Bow2:
+                currentEffect = bowEffect;
+                break;
+            case Weapon.WeaponType.Bow3:
+                currentEffect = bowEffect;
+                break;
             case Weapon.WeaponType.Staff1:
+                currentEffect = staffEffect;
+                break;
+            case Weapon.WeaponType.Staff2:
+                currentEffect = staffEffect;
+                break;
+            case Weapon.WeaponType.Staff3:
                 currentEffect = staffEffect;
                 break;
         }
@@ -198,8 +217,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-   IEnumerator Attack()
+    IEnumerator Attack()
     {
+        if (isAttacking) yield break;
         isAttacking = true;
         if (currentEffect != null)
         {
@@ -211,19 +231,112 @@ public class PlayerController : MonoBehaviour
                 if (effectCollider != null)
                 {
                     effectCollider.enabled = true;
-                    yield return new WaitForSeconds(0.3f);  // 콜라이더 활성화 시간
+                    yield return new WaitForSeconds(0.3f);  // 콜라이더가 활성화되어 있는 시간
                     effectCollider.enabled = false;
                 }
+                // 이팩트 비활성화 전에 콜라이더를 비활성화 확실히 하기
+                if (currentEffect.GetComponent<Collider2D>() != null)
+                {
+                    currentEffect.GetComponent<Collider2D>().enabled = false;
+                }
+                currentEffect.SetActive(false); // 이팩트 비활성화
             }
+            if (currentWeapon.GetComponent<Weapon>().weaponType == Weapon.WeaponType.Sword2)
+            {
+                Collider2D effectCollider = currentEffect.GetComponent<Collider2D>();
+                if (effectCollider != null)
+                {
+                    // 콜라이더를 처음 활성화하고 0.15초 후 비활성화
+                    effectCollider.enabled = true;
+                    yield return new WaitForSeconds(0.2f);  // 콜라이더가 활성화되어 있는 시간
+                    effectCollider.enabled = false;
+                    currentEffect.SetActive(false);
+
+                    currentEffect.SetActive(true);
+                    // 짧은 대기 후 콜라이더를 다시 활성화하고 0.15초 후 비활성화
+                    yield return new WaitForSeconds(0.05f);  // 두 번째 활성화 전 잠시 대기
+                    effectCollider.enabled = true;
+                    yield return new WaitForSeconds(0.2f);  // 두 번째 콜라이더 활성화 시간
+                    effectCollider.enabled = false;
+                }
+
+                // 이팩트 비활성화 전에 콜라이더를 비활성화 확실히 하기
+                if (currentEffect.GetComponent<Collider2D>() != null)
+                {
+                    currentEffect.GetComponent<Collider2D>().enabled = false;
+                }
+                currentEffect.SetActive(false); // 이팩트 비활성화
+            }
+            if (currentWeapon.GetComponent<Weapon>().weaponType == Weapon.WeaponType.Sword3)
+            {
+                Collider2D effectCollider = currentEffect.GetComponent<Collider2D>();
+                if (effectCollider != null)
+                {
+                    // 콜라이더를 처음 활성화하고 0.15초 후 비활성화
+                    effectCollider.enabled = true;
+                    yield return new WaitForSeconds(0.15f);  // 콜라이더가 활성화되어 있는 시간
+                    effectCollider.enabled = false;
+
+                    currentEffect.SetActive(false);
+                    currentEffect.SetActive(true);
+                    // 짧은 대기 후 콜라이더를 다시 활성화하고 0.15초 후 비활성화
+                    yield return new WaitForSeconds(0.05f);  // 두 번째 활성화 전 잠시 대기
+                    effectCollider.enabled = true;
+                    yield return new WaitForSeconds(0.15f);  // 두 번째 콜라이더 활성화 시간
+                    effectCollider.enabled = false;
+
+                    currentEffect.SetActive(false);
+                    currentEffect.SetActive(true);
+                    // 짧은 대기 후 콜라이더를 다시 활성화하고 0.15초 후 비활성화
+                    yield return new WaitForSeconds(0.05f);  // 두 번째 활성화 전 잠시 대기
+                    effectCollider.enabled = true;
+                    yield return new WaitForSeconds(0.15f);  // 두 번째 콜라이더 활성화 시간
+                    effectCollider.enabled = false;
+                }
+
+                // 이팩트 비활성화 전에 콜라이더를 비활성화 확실히 하기
+                if (currentEffect.GetComponent<Collider2D>() != null)
+                {
+                    currentEffect.GetComponent<Collider2D>().enabled = false;
+                }
+                currentEffect.SetActive(false); // 이팩트 비활성화
+            }
+
             // 활의 경우 화살 발사
             else if (currentWeapon.GetComponent<Weapon>().weaponType == Weapon.WeaponType.Bow1)
             {
-                LaunchProjectile(arrowPrefab);
+                LaunchProjectile(arrowPrefab,0, 5);
+            }
+            else if (currentWeapon.GetComponent<Weapon>().weaponType == Weapon.WeaponType.Bow2)
+            {
+                // 각도를 조금씩 변경하여 화살 두 개를 발사
+                LaunchProjectile(arrowPrefab, -10, 5);  // 첫 번째 화살은 좌측 각도
+                LaunchProjectile(arrowPrefab, 10, 5);   // 두 번째 화살은 우측 각도
             }
             // 스태프의 경우 마법 프로젝타일 발사
+            else if (currentWeapon.GetComponent<Weapon>().weaponType == Weapon.WeaponType.Bow3)
+            {
+                // 각도를 조금씩 변경하여 화살 세 개를 발사
+                LaunchProjectile(arrowPrefab, -15, 5);  // 첫 번째 화살은 좌측 각도
+                LaunchProjectile(arrowPrefab, 0, 5);   // 두 번째 화살은 가운데
+                LaunchProjectile(arrowPrefab, 15, 5);   // 세 번째 화살은 우측 각도
+            }
             else if (currentWeapon.GetComponent<Weapon>().weaponType == Weapon.WeaponType.Staff1)
             {
-                LaunchProjectile(magicPrefab);
+                LaunchProjectile(magicPrefab, 0, 5);
+            }
+            else if (currentWeapon.GetComponent<Weapon>().weaponType == Weapon.WeaponType.Staff2)
+            {
+                // 각도를 조금씩 변경하여 화살 두 개를 발사
+                LaunchProjectile(magicPrefab, -10, 5);  // 첫 번째 화살은 좌측 각도
+                LaunchProjectile(magicPrefab, 10, 5);   // 두 번째 화살은 우측 각도
+            }
+            else if (currentWeapon.GetComponent<Weapon>().weaponType == Weapon.WeaponType.Staff3)
+            {
+                // 각도를 조금씩 변경하여 화살 세 개를 발사
+                LaunchProjectile(magicPrefab, -15, 5);  // 첫 번째 화살은 좌측 각도
+                LaunchProjectile(magicPrefab, 0, 5);   // 두 번째 화살은 가운데
+                LaunchProjectile(magicPrefab, 15, 5);   // 세 번째 화살은 우측 각도
             }
 
             yield return new WaitForSeconds(0.3f);  // 이펙트 지속 시간
@@ -238,12 +351,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void LaunchProjectile(GameObject projectilePrefab)
+    void LaunchProjectile(GameObject projectilePrefab, float angle, float speed)
     {
         if (projectilePrefab != null)
         {
-            GameObject projectile = Instantiate(projectilePrefab, currentEffect.transform.position, Quaternion.identity);
-            projectile.GetComponent<Rigidbody2D>().velocity = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized * 10f;  // 발사 속도 설정
+            Vector3 firingPosition = transform.position; // 발사 위치 설정
+            GameObject projectile = Instantiate(projectilePrefab, firingPosition, Quaternion.identity);
+            Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
+
+            // 마우스 포인터 위치 기준으로 발사 방향 계산
+            Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            targetPosition.z = 0; // z-축 값을 0으로 설정
+
+            // 발사 방향 벡터 생성 및 각도 조정
+            Vector3 firingDirection = (targetPosition - firingPosition).normalized;
+            firingDirection = Quaternion.Euler(0, 0, angle) * firingDirection;
+
+            // Rigidbody2D의 velocity에 발사 방향과 속도 적용
+            rb.velocity = firingDirection * speed;
+
+            // 화살의 회전 각도를 발사 방향에 맞추어 설정
+            float rotZ = Mathf.Atan2(firingDirection.y, firingDirection.x) * Mathf.Rad2Deg;
+
+            // 화살 스프라이트가 기본적으로 45도 회전된 상태로 제작되었다면, 이를 보정
+            projectile.transform.rotation = Quaternion.Euler(0, 0, rotZ - 135);
         }
     }
 }
