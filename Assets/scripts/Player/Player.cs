@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviour
     public GameObject staffEffect;
     private GameObject currentEffect;
 
+    public GameObject arrowPrefab;
+    public GameObject magicPrefab;
+
     // 공격 관련 변수
     public float attackCooldown = 1f; // 공격 쿨다운 시간
     private bool isAttacking = false;
@@ -178,13 +181,13 @@ public class PlayerController : MonoBehaviour
         // 무기 종류에 따른 이펙트 활성화 및 currentEffect 설정
         switch (weaponType)
         {
-            case Weapon.WeaponType.Sword:
+            case Weapon.WeaponType.Sword1:
                 currentEffect = swordEffect;
                 break;
-            case Weapon.WeaponType.Bow:
+            case Weapon.WeaponType.Bow1:
                 currentEffect = bowEffect;
                 break;
-            case Weapon.WeaponType.Staff:
+            case Weapon.WeaponType.Staff1:
                 currentEffect = staffEffect;
                 break;
         }
@@ -195,28 +198,52 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator Attack()
+   IEnumerator Attack()
     {
         isAttacking = true;
-
-        // 공격 애니메이션 또는 이펙트 활성화
         if (currentEffect != null)
         {
             currentEffect.SetActive(true);
-            // 이펙트를 잠시 활성화 후 비활성화
-            yield return new WaitForSeconds(0.3f); // 이펙트 활성화 시간 조절
+            // 검의 경우 콜라이더를 잠시 활성화
+            if (currentWeapon.GetComponent<Weapon>().weaponType == Weapon.WeaponType.Sword1)
+            {
+                Collider2D effectCollider = currentEffect.GetComponent<Collider2D>();
+                if (effectCollider != null)
+                {
+                    effectCollider.enabled = true;
+                    yield return new WaitForSeconds(0.3f);  // 콜라이더 활성화 시간
+                    effectCollider.enabled = false;
+                }
+            }
+            // 활의 경우 화살 발사
+            else if (currentWeapon.GetComponent<Weapon>().weaponType == Weapon.WeaponType.Bow1)
+            {
+                LaunchProjectile(arrowPrefab);
+            }
+            // 스태프의 경우 마법 프로젝타일 발사
+            else if (currentWeapon.GetComponent<Weapon>().weaponType == Weapon.WeaponType.Staff1)
+            {
+                LaunchProjectile(magicPrefab);
+            }
+
+            yield return new WaitForSeconds(0.3f);  // 이펙트 지속 시간
             currentEffect.SetActive(false);
         }
-
-        // 공격 쿨다운 시간 동안 대기
         yield return new WaitForSeconds(attackCooldown);
-
         isAttacking = false;
 
-        // 마우스를 계속 누르고 있으면 재공격
         if (Input.GetMouseButton(0))
         {
             StartCoroutine(Attack());
+        }
+    }
+
+    void LaunchProjectile(GameObject projectilePrefab)
+    {
+        if (projectilePrefab != null)
+        {
+            GameObject projectile = Instantiate(projectilePrefab, currentEffect.transform.position, Quaternion.identity);
+            projectile.GetComponent<Rigidbody2D>().velocity = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized * 10f;  // 발사 속도 설정
         }
     }
 }
