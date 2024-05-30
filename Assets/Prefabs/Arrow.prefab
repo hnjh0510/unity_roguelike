@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7726697276997018386}
   - component: {fileID: 430298539513720305}
   - component: {fileID: -1878320373614717982}
-  - component: {fileID: 8328719667790555589}
+  - component: {fileID: 3519222047710620734}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: PBullet
@@ -99,7 +99,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ce0e59ee2c98f4d9386b5da4e1e7e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 5
 --- !u!50 &-1878320373614717982
 Rigidbody2D:
   serializedVersion: 4
@@ -127,8 +126,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &8328719667790555589
-CircleCollider2D:
+--- !u!60 &3519222047710620734
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -160,5 +159,22 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.46875
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 0.9375, y: 0.5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.5, y: 0.5}
+      - {x: -0.4473992, y: 0.19275033}
+      - {x: -0.3750075, y: 0.12179503}
+      - {x: 0.33171454, y: -0.53204936}
+      - {x: 0.5416641, y: -0.33654833}
+      - {x: -0.115347385, y: 0.3877896}
+      - {x: -0.19871348, y: 0.45833582}
+  m_UseDelaunayMesh: 0

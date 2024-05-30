@@ -56,6 +56,16 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        // 이동 입력 받기
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
+
+        // 이동 벡터 생성
+        Vector2 movement = new Vector2(moveHorizontal, moveVertical);
+
+        // 이동 벡터 정규화
+        movement.Normalize();  // 대각선 이동 시 속도가 증가하지 않도록 정규화
+
         // 플레이어 이동
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
