@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 {
     public string enemyname;
     public float speed;
-    public int health;
+    public float health;
 
     public GameObject bullet;
 
@@ -30,7 +30,19 @@ public class Enemy : MonoBehaviour
         MoveAndShoot();
         Reload();
     }
-
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+    void Die()
+    {
+        // 적이 죽었을 때의 로직
+        Destroy(gameObject);
+    }
     void MoveTowardsPlayer()
     {
         // 플레이어를 향한 방향 계산

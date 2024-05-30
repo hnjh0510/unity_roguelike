@@ -9,6 +9,8 @@ TagManager:
   - Door
   - Enemy
   - Weapon
+  - EBullet
+  - Boss
   layers:
   - Default
   - TransparentFX
