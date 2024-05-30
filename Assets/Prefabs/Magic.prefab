@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -537949720843125026}
   m_Layer: 0
   m_Name: Magic
-  m_TagString: Untagged
+  m_TagString: PBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -161,3 +161,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ce0e59ee2c98f4d9386b5da4e1e7e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dmg: 1

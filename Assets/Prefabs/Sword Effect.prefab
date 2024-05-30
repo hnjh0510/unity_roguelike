@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 6445666186361868709}
   - component: {fileID: 6445666186361868710}
   - component: {fileID: 8940419636550615392}
+  - component: {fileID: 9029645663364533742}
   m_Layer: 0
   m_Name: Sword Effect
-  m_TagString: Untagged
+  m_TagString: PBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,3 +153,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &9029645663364533742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6445666186361868711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe22766e3c4c5f4d81c3044444a02de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dmg: 2

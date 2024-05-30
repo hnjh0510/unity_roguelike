@@ -74,6 +74,20 @@ public class Boss : MonoBehaviour
         ExecutePattern(currentPatterns[currentPatternIndex]);  // 현재 패턴 실행
     }
 
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+    void Die()
+    {
+        // 적이 죽었을 때의 로직
+        Destroy(gameObject);
+    }
+
     Vector3 GetRandomDirection()
     {
         float angle = Random.Range(0f, 360f);
