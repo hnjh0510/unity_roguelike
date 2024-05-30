@@ -6,7 +6,8 @@ using UnityEngine.UIElements;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public Transform weaponHolder; // 무기를 붙일 위치
+
+    public Transform weaponHolder; // 공경이 나갈 위치
     private Animator anim;
     private Rigidbody2D rb;
     private Vector2 movement;
@@ -57,8 +58,8 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         // 이동 입력 받기
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        float moveHorizontal = Input.GetAxisRaw("Horizontal");
+        float moveVertical = Input.GetAxisRaw("Vertical");
 
         // 이동 벡터 생성
         Vector2 movement = new Vector2(moveHorizontal, moveVertical);
@@ -67,7 +68,14 @@ public class PlayerController : MonoBehaviour
         movement.Normalize();  // 대각선 이동 시 속도가 증가하지 않도록 정규화
 
         // 플레이어 이동
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        rb.velocity = movement * moveSpeed;
+
+        // 플레이어의 스프라이트 방향 조정
+        if (moveHorizontal != 0)
+        {
+            // localScale.x를 moveHorizontal의 부호에 따라 조정하여 왼쪽이나 오른쪽을 바라보게 함
+            transform.localScale = new Vector3(Mathf.Sign(moveHorizontal)*(-4), 4, 4);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collision)

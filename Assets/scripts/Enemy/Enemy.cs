@@ -42,6 +42,13 @@ public class Enemy : MonoBehaviour
 
         // 애니메이션 상태 업데이트
         anim.SetBool("E_move", rigid.velocity != Vector2.zero);
+
+        // 적의 스프라이트 방향 조정
+        if (dirVec2D.x != 0)
+        {
+            // localScale.x를 dirVec2D.x의 부호에 따라 조정하여 왼쪽이나 오른쪽을 바라보게 함
+            transform.localScale = new Vector3(Mathf.Sign(dirVec2D.x)*(0.15f), 0.15f, 0.15f);
+        }
     }
 
     void MoveAndShoot()
