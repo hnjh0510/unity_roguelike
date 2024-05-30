@@ -23,17 +23,25 @@ public class MakeRandomMap : MonoBehaviour
     [SerializeField]
     private GameObject box;//상자
 
-    public GameObject enemy;
+    public List<GameObject> enemy;//적 리스트
 
     [SerializeField]
-    private List<RectangleSpace> roomSpace;
+    private List<RectangleSpace> roomSpace;//isinside넣을 리스트
+    [SerializeField]
+    private List<RectangleSpace> _roomSpace;//적생성할때 사용할 방 리스트
+    [SerializeField]
+    private List<int> roomCheck;
+    private int roomcheck = 0;
 
-    public GameObject isinside;
+    public GameObject isinside;//방에 플레이어와 적이 있는지 감지하여 문을 생성하는 collider
 
     private HashSet<Vector2Int> floor;//floor타일
     private HashSet<Vector2Int> wall;//wall타일
     private HashSet<Vector2Int> door;//door타일
 
+    public List<int> RoomSize;//방크기 저장할 리스트
+    private int beforeCount;//이전 바닥갯수
+    private int floorCount;//지금 바닥갯수
 
 
     private void Start()
@@ -63,30 +71,72 @@ public class MakeRandomMap : MonoBehaviour
         spreadTilemap.SpreadFloorTilemap(floor);//floor타일 깔기
         spreadTilemap.SpreadWallTilemap(wall);//wall타일 깔기
         
-        int pRand = Random.Range(0, roomSpace.Count);
-        player.transform.position = (Vector2)roomSpace[pRand].Center();
-        roomSpace.RemoveAt(pRand);
+        int pRand = Random.Range(0, roomSpace.Count);//플레이어 위치 랜덤
+        player.transform.position = (Vector2)roomSpace[pRand].Center();//위치를 옮김
+        //RoomSize[pRand] = 0;//플레이어가 있는방의 바닥타일갯수를 0으로 만듬(적을 생성하지 않게하기 위해)
+        RoomSize.RemoveAt(pRand);
+        roomSpace.RemoveAt(pRand);//roomSpace에서 플레이어가있는방을 뺌
+        roomCheck.RemoveAt(pRand);
 
-        int exitRand = Random.Range(0, roomSpace.Count);
-        entrance.transform.position = (Vector2)roomSpace[exitRand].Center();
-        roomSpace.RemoveAt(exitRand);
+        int exitRand = Random.Range(0, roomSpace.Count);//다음으로 넘어가는 포탈 위치 랜덤
+        entrance.transform.position = (Vector2)roomSpace[exitRand].Center();////위치 옮김
+        //RoomSize[exitRand] = 0;//포탈이 있는 방의 바닥갯수 0으로만듬
+        RoomSize.RemoveAt(exitRand);
+        roomSpace.RemoveAt(exitRand);//리스트에서 지움
+        roomCheck.RemoveAt(exitRand);
 
-        int boxRand = Random.Range(0, roomSpace.Count);
-        box.transform.position = (Vector2)roomSpace[boxRand].Center();
-        roomSpace.RemoveAt(boxRand);
+        int boxRand = Random.Range(0, roomSpace.Count);//상자 위치 랜덤
+        box.transform.position = (Vector2)roomSpace[boxRand].Center();//위치옮김
+        //RoomSize[boxRand] = 0;//상자가 있는 곳 타일갯수 0으로만듬
+        RoomSize.RemoveAt(boxRand);
+        roomSpace.RemoveAt(boxRand);//리스트에서 지우기
+        roomCheck.RemoveAt(boxRand);
 
-        int count = roomSpace.Count;
+        int count = roomCheck.Count;
         for(int i=0; i < count; i++)
         {
-            Instantiate(enemy, new Vector3(roomSpace[i].Center().x, roomSpace[i].Center().y), Quaternion.identity);
+            if (RoomSize[i] < 30)
+            {
+                for (int j = 0; j < 1; j++)
+                {
+                    int RandEnemy = Random.Range(0, enemy.Count);
+                    float xrand = Random.Range(_roomSpace[roomCheck[i]].Center().x - _roomSpace[roomCheck[i]].width / 2 + 2, _roomSpace[roomCheck[i]].Center().x + _roomSpace[roomCheck[i]].width / 2);
+                    float yrand = Random.Range(_roomSpace[roomCheck[i]].Center().y - _roomSpace[roomCheck[i]].height / 2 + 2, _roomSpace[roomCheck[i]].Center().y + _roomSpace[roomCheck[i]].height / 2);
+                    Instantiate(enemy[RandEnemy], new Vector3(xrand, yrand), Quaternion.identity);
+                }
+            }
+            if (RoomSize[i] < 50)
+            {
+                for (int j=0; j < 2; j++)
+                {
+                    int RandEnemy = Random.Range(0, enemy.Count);
+                    float xrand = Random.Range(_roomSpace[roomCheck[i]].Center().x - _roomSpace[roomCheck[i]].width / 2 + 2, _roomSpace[roomCheck[i]].Center().x + _roomSpace[roomCheck[i]].width / 2);
+                    float yrand = Random.Range(_roomSpace[roomCheck[i]].Center().y - _roomSpace[roomCheck[i]].height / 2 + 2, _roomSpace[roomCheck[i]].Center().y + _roomSpace[roomCheck[i]].height / 2);
+                    Instantiate(enemy[RandEnemy], new Vector3(xrand, yrand), Quaternion.identity);
+                }
+            }
+            else if (RoomSize[i] < 70)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    int RandEnemy = Random.Range(0, enemy.Count);
+                    float xrand = Random.Range(_roomSpace[roomCheck[i]].Center().x - _roomSpace[roomCheck[i]].width / 2 + 2, _roomSpace[roomCheck[i]].Center().x + _roomSpace[roomCheck[i]].width / 2);
+                    float yrand = Random.Range(_roomSpace[roomCheck[i]].Center().y - _roomSpace[roomCheck[i]].height / 2 + 2, _roomSpace[roomCheck[i]].Center().y + _roomSpace[roomCheck[i]].height / 2);
+                    Instantiate(enemy[RandEnemy], new Vector3(xrand, yrand), Quaternion.identity);
+                }
+            }
+            else
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    int RandEnemy = Random.Range(0, enemy.Count);
+                    float xrand = Random.Range(_roomSpace[roomCheck[i]].Center().x - _roomSpace[roomCheck[i]].width / 2 + 2, _roomSpace[roomCheck[i]].Center().x + _roomSpace[roomCheck[i]].width / 2);
+                    float yrand = Random.Range(_roomSpace[roomCheck[i]].Center().y - _roomSpace[roomCheck[i]].height / 2 + 2, _roomSpace[roomCheck[i]].Center().y + _roomSpace[roomCheck[i]].height / 2);
+                    Instantiate(enemy[RandEnemy], new Vector3(xrand, yrand), Quaternion.identity);
+                }
+            }
         }
 
-        /*foreach(var room in roomSpace)
-        {
-            int xrand = Random.Range(1, room.width - 1);
-            int hrand = Random.Range(1, room.height - 1);
-            Instantiate(enemy, new Vector3(xrand, hrand), Quaternion.identity);
-        }*/
     }
 
     private void MakeRandomRooms()
@@ -95,6 +145,8 @@ public class MakeRandomMap : MonoBehaviour
         {
             HashSet<Vector2Int> positions = MakeARandomRectangleRoom(space);//space의 위치를 저장
             floor.UnionWith(positions);//UnionWith로 위치를 floor에 저장한다
+
+            CheckRoomSize();
         }
     }
 
@@ -123,8 +175,30 @@ public class MakeRandomMap : MonoBehaviour
         RectangleSpace roomspace = new RectangleSpace(new Vector2Int(space.Center().x  - width / 2, space.Center().y - height / 2), width, height);
         //Debug.DrawLine((Vector3Int)roomspace.leftDown, new Vector3(roomspace.leftDown.x + roomspace.width, roomspace.leftDown.y + roomspace.height), Color.red);
         roomSpace.Add(roomspace);
+        _roomSpace.Add(roomspace);
+        roomCheck.Add(roomcheck);
+        roomcheck++;
     }
 
+    private void CheckRoomSize()//방의 바닥타일 갯수 체크
+    {
+        foreach (Vector2Int tile in floor)//바닥갯수만큼
+        {
+            floorCount++;//1씩더함
+        }
+        if(beforeCount==0)//첫번째
+        {
+            RoomSize.Add(floorCount);//타일갯수를 리스트에 올림
+            beforeCount = floorCount;//beforeCount에 현재전체바닥타일갯수 저장
+            floorCount = 0;//0으로 초기화
+        }
+        else//첫번째 아님
+        {
+            RoomSize.Add(floorCount - beforeCount);//지금샌 타일갯수 - 전타일갯수를 리스트에 올림
+            beforeCount = floorCount;//beforeCount에 현재전체바닥타일갯수 저장
+            floorCount = 0;//0으로 초기화
+        }
+    }
 
     private void MakeCorridors()
     {
