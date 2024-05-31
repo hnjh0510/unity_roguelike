@@ -10,7 +10,8 @@ public class IsInside : MonoBehaviour/////////////////////////////정중환
     public GameObject player;
     public GameObject enemy;
     public GameObject door;
-    
+
+    public bool emove = false;
     void Start()
     {
         transform.Translate(new Vector3(0.5f, 0, 0));
@@ -21,6 +22,7 @@ public class IsInside : MonoBehaviour/////////////////////////////정중환
         if (door != null)
         {
             door.SetActive(false);
+            emove = false;
         }
     }
     void Update()
@@ -62,11 +64,13 @@ public class IsInside : MonoBehaviour/////////////////////////////정중환
         if ((playersInRoom > 0 && enemiesInRoom > 0))
         {
             GameObject.Find("GameObject").transform.Find("door").gameObject.SetActive(true);
+            emove = true;
             //Debug.Log("close");
         }
         else
         {
             GameObject.Find("GameObject").transform.Find("door").gameObject.SetActive(false);
+            emove = false;
             //Debug.Log("open");
         }
     }

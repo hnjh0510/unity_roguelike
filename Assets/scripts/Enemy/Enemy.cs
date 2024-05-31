@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -18,17 +19,25 @@ public class Enemy : MonoBehaviour
     Animator anim;
     Rigidbody2D rigid;
 
+    public bool toMove;
+    public GameObject isInside;
     void Awake()
     {
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
     {
-        MoveTowardsPlayer();
-        MoveAndShoot();
-        Reload();
+        IsInside tomove = isInside.GetComponent<IsInside>();
+        toMove = tomove.emove;
+        if(toMove == true)
+        {
+            MoveTowardsPlayer();
+            MoveAndShoot();
+            Reload();
+        }
     }
     public void TakeDamage(float damage)
     {
@@ -122,5 +131,10 @@ public class Enemy : MonoBehaviour
         {
             Destroy(gameObject); // Àû »ç¸Á Ã³¸®
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        isInside = collision.gameObject;
     }
 }
