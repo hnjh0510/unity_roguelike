@@ -8,6 +8,7 @@ public class Button : MonoBehaviour
     public void GameStartNextScene()
     {
         SceneManager.LoadScene(1);
+        Player.isInitialized = false;
     }
 
     public void ToStartScene()

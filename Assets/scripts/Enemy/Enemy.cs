@@ -26,13 +26,34 @@ public class Enemy : MonoBehaviour
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
+
+        // 같은 태그를 가진 오브젝트들 간의 충돌을 무시
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag(tag);
+        foreach (GameObject obj in objectsWithTag)
+        {
+            if (obj != this.gameObject)
+            {
+                Collider2D collider1 = obj.GetComponent<Collider2D>();
+                Collider2D collider2 = GetComponent<Collider2D>();
+                if (collider1 != null && collider2 != null)
+                {
+                    Physics2D.IgnoreCollision(collider1, collider2);
+                }
+            }
+        }
     }
 
     void Update()
     {
-        IsInside tomove = isInside.GetComponent<IsInside>();
-        toMove = tomove.emove;
-        if(toMove == true)
+        if (isInside != null)
+        {
+            IsInside tomove = isInside.GetComponent<IsInside>();
+            if (tomove != null)
+            {
+                toMove = tomove.emove;
+            }
+        }
+        if (toMove)
         {
             MoveTowardsPlayer();
             MoveAndShoot();
@@ -82,11 +103,11 @@ public class Enemy : MonoBehaviour
             {
                 case "A":
                     // 타입 A의 공격 로직
-                    FireDirect(dirVec2D, 10);
+                    FireDirect(dirVec2D, 3);
                     break;
                 case "B":
                     // 타입 B는 총알을 발사하지 않고 속도 증가
-                    rigid.velocity = dirVec2D * speed * 1.2f;
+                    rigid.velocity = dirVec2D * speed * 2f;
                     break;
                 case "C":
                     // 타입 C의 공격 로직
@@ -107,30 +128,31 @@ public class Enemy : MonoBehaviour
 
     void FireCircular()
     {
-        int numberOfDirections = 12;
+        int numberOfDirections = 2;
         float angleStep = 360f / numberOfDirections;
         for (int i = 0; i < numberOfDirections; i++)
         {
             float angle = i * angleStep;
             Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-            GameObject newBullet = Instantiate(bullet, transform.position, Quaternion.Euler(0, 0, angle - 90));
+            GameObject newBullet = Instantiate(bullet, transform.position, Quaternion.Euler(0, 0, angle));
             Rigidbody2D bulletRigidbody = newBullet.GetComponent<Rigidbody2D>();
-            bulletRigidbody.velocity = direction * 5;
+            bulletRigidbody.velocity = direction * 3f;
+        }
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        Player player = collision.gameObject.GetComponent<Player>();
+
+        if (collision.gameObject.CompareTag("Player") && player != null && player.isInvincible == false)
+        {
+            player.TakeDamage(1);
+            Debug.Log("체력감소 현재체력:" + Player.health);
         }
     }
 
     void Reload()
     {
         curShotDelay += Time.deltaTime;
-    }
-
-    public void OnHit(int dmg)
-    {
-        health -= dmg;
-        if (health <= 0)
-        {
-            Destroy(gameObject); // 적 사망 처리
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

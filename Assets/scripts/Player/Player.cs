@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerController : MonoBehaviour
+public class Player : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    public static float health =10f;
+    public static bool isInitialized = false; // 초기화 여부를 확인하는 변수
+    public bool isInvincible = false; // 무적 상태 여부 확인
 
-    public Transform weaponHolder; // 공경이 나갈 위치
+    public Transform weaponHolder; // 공격이 나갈 위치
     private Animator anim;
     private Rigidbody2D rb;
     private Vector2 movement;
@@ -27,6 +30,24 @@ public class PlayerController : MonoBehaviour
     public float attackCooldown = 1f; // 공격 쿨다운 시간
     private bool isAttacking = false;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+
+        // 동일한 Player 객체가 이미 있는 경우 새로 생성된 객체를 파괴
+        Player[] players = FindObjectsOfType<Player>();
+        if (players.Length > 1)
+        {
+            Destroy(gameObject);
+        }
+
+        if (!isInitialized)
+        {
+            isInitialized = true;
+            // 여기서 health 초기화 가능
+            health = 10f; // 게임 시작 시 초기 체력
+        }
+    }
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -76,6 +97,47 @@ public class PlayerController : MonoBehaviour
             // localScale.x를 moveHorizontal의 부호에 따라 조정하여 왼쪽이나 오른쪽을 바라보게 함
             transform.localScale = new Vector3(Mathf.Sign(moveHorizontal)*(-4), 4, 4);
         }
+    }
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            StartCoroutine(BecomeInvincible());
+        }
+    }
+    IEnumerator BecomeInvincible()
+    {
+        isInvincible = true;
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (spriteRenderer != null)
+        {
+            Color originalColor = spriteRenderer.color;
+
+            // 무적 상태 동안 색깔 깜빡이기
+            for (float i = 0; i < 0.5f; i += 0.1f)
+            {
+                spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
+                yield return new WaitForSeconds(0.05f);
+                spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1f);
+                yield return new WaitForSeconds(0.05f);
+            }
+
+            // 스프라이트 색깔을 원래대로 복구
+            spriteRenderer.color = originalColor;
+        }
+
+        isInvincible = false;
+    }
+    void Die()
+    {
+        // 적이 죽었을 때의 로직
+        Destroy(gameObject);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
