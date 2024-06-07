@@ -142,7 +142,8 @@ public class Player : MonoBehaviour
     void Die()
     {
         // 적이 죽었을 때의 로직
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        SceneManager.LoadScene(11);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
