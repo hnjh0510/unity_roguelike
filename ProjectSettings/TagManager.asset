@@ -11,6 +11,7 @@ TagManager:
   - Weapon
   - EBullet
   - Boss
+  - MagicItem
   layers:
   - Default
   - TransparentFX
