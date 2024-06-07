@@ -46,6 +46,7 @@ public class MakeRandomMap : MonoBehaviour
 
     private void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         StartRandomMap();
     }
 
