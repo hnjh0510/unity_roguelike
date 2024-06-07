@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
@@ -50,10 +51,14 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
-
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
     void Update()
     {
         // 입력 감지
@@ -148,7 +153,23 @@ public class Player : MonoBehaviour
             PickUpWeapon(collision.gameObject);
         }
     }
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 씬이 로드될 때 현재 무기를 제외한 모든 아이템 제거
+        RemoveUnusedItems();
+    }
 
+    void RemoveUnusedItems()
+    {
+        Item[] items = FindObjectsOfType<Item>();
+        foreach (Item item in items)
+        {
+            if (item.gameObject != currentWeapon)
+            {
+                Destroy(item.gameObject);
+            }
+        }
+    }
     void PickUpWeapon(GameObject newWeapon)
     {
         if (currentWeapon != null)
@@ -192,7 +213,7 @@ public class Player : MonoBehaviour
         Item floatingItem = currentWeapon.GetComponent<Item>();
         if (floatingItem != null)
         {
-            floatingItem.enabled = false;
+            floatingItem.enabled = false; // 아이템 스크립트 비활성화
         }
     }
 
@@ -457,4 +478,5 @@ public class Player : MonoBehaviour
             projectile.transform.rotation = Quaternion.Euler(0, 0, rotZ - 135);
         }
     }
+
 }
