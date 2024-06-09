@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
+//using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public static float health =10f;
+    public static float health =10f;//hp바 최대 체력
+    public static float maxhealth = 10f;
     public static bool isInitialized = false; // 초기화 여부를 확인하는 변수
     public bool isInvincible = false; // 무적 상태 여부 확인
 
@@ -30,6 +32,8 @@ public class Player : MonoBehaviour
     // 공격 관련 변수
     public float attackCooldown = 1f; // 공격 쿨다운 시간
     private bool isAttacking = false;
+
+    public Slider HpBar;//hp바
 
     private void Awake()
     {
@@ -79,6 +83,7 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(Attack());
         }
+        CheckHp();//체력바
     }
 
     void FixedUpdate()
@@ -480,4 +485,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void CheckHp()
+    {
+        if(HpBar != null)
+        {
+            HpBar.value = health/maxhealth;
+        }
+    }
 }
