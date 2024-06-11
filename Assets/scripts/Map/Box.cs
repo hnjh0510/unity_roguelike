@@ -26,13 +26,4 @@ public class Box : MonoBehaviour
             isOpen = true;
         }
     }
-    /*void OnCollisionEnter2D(Collision2D collision1)
-    {
-        if (collision1.gameObject == player && isOpen == false)
-        {
-            //公扁 靛而
-            Debug.Log("公扁 靛而");
-            isOpen = true;
-        }
-    }*/
 }
