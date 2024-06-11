@@ -12,6 +12,8 @@ TagManager:
   - EBullet
   - Boss
   - MagicItem
+  - HpBar
+  - es
   layers:
   - Default
   - TransparentFX
