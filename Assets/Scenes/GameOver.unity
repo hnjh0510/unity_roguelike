@@ -353,7 +353,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uBCD1\uC2E0"
+  m_Text: GameOver
 --- !u!222 &707699490
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -571,6 +571,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  pb: {fileID: 0}
+  es: {fileID: 0}
 --- !u!4 &1767523355
 Transform:
   m_ObjectHideFlags: 0
