@@ -6,15 +6,10 @@ public class Box : MonoBehaviour
 {
     public GameObject player;
     public bool isOpen = false;
+    public List<GameObject> item;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -23,6 +18,9 @@ public class Box : MonoBehaviour
         {
             //公扁 靛而
             Debug.Log("公扁 靛而");
+            int itemrand = Random.Range(0, item.Count);
+            item[itemrand].transform.position = transform.position;
+            Instantiate(item[itemrand]);
             isOpen = true;
         }
     }

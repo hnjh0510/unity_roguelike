@@ -925,6 +925,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7925866249203100901, guid: e6b1268c9533a624caf83273174e0edb, type: 3}
+      propertyPath: item.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7925866249203100901, guid: e6b1268c9533a624caf83273174e0edb, type: 3}
+      propertyPath: item.Array.data[0]
+      value: 
+      objectReference: {fileID: 7182970352599948772, guid: 80b47de73ba3d7c4e8b1dd6825303a93, type: 3}
+    - target: {fileID: 7925866249203100901, guid: e6b1268c9533a624caf83273174e0edb, type: 3}
+      propertyPath: item.Array.data[1]
+      value: 
+      objectReference: {fileID: 7076551346756899982, guid: d2e8c927de43e084fba555f04afa772b, type: 3}
+    - target: {fileID: 7925866249203100901, guid: e6b1268c9533a624caf83273174e0edb, type: 3}
+      propertyPath: item.Array.data[2]
+      value: 
+      objectReference: {fileID: 7312980676083823804, guid: e33ac0ac0efadbe49bff03f0212a77ee, type: 3}
     - target: {fileID: 8852205508836494863, guid: e6b1268c9533a624caf83273174e0edb, type: 3}
       propertyPath: m_Name
       value: box
