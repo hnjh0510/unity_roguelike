@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class MagicItem : MonoBehaviour
 {
-    public enum MedicineType { food, downfullHPpostion, upfullHPpostion, downShotSpeedscroll, upShotSpeedscroll, downSpeedscroll, upSpeedscroll}
-    public MedicineType medicinetype;
+    public enum MedicineType { food, DownHpPotion, UpHpPotion, downShotSpeedscroll, upShotSpeedscroll, downSpeedscroll, upSpeedscroll}
+    public MedicineType medicineType;
 }

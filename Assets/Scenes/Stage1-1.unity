@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9735f438c47ab84e9eb3b611b899e74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  medicinetype: 4
+  medicineType: 4
 --- !u!1 &159982957 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1967835574231978638, guid: 3e196c9e632c76841a71cb6e2dc6d010, type: 3}
@@ -521,7 +521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9735f438c47ab84e9eb3b611b899e74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  medicinetype: 6
+  medicineType: 6
 --- !u!1 &305225961
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,7 +537,7 @@ GameObject:
   - component: {fileID: 305225962}
   - component: {fileID: 305225967}
   m_Layer: 0
-  m_Name: food
+  m_Name: Food
   m_TagString: MagicItem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -708,7 +708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9735f438c47ab84e9eb3b611b899e74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  medicinetype: 0
+  medicineType: 0
 --- !u!4 &309001511 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 57329937548275001, guid: 80b47de73ba3d7c4e8b1dd6825303a93, type: 3}
@@ -1612,7 +1612,7 @@ GameObject:
   - component: {fileID: 994775129}
   - component: {fileID: 994775134}
   m_Layer: 0
-  m_Name: upfullHPpostion
+  m_Name: UpHpPosition
   m_TagString: MagicItem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1783,7 +1783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9735f438c47ab84e9eb3b611b899e74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  medicinetype: 2
+  medicineType: 2
 --- !u!1 &1023527679
 GameObject:
   m_ObjectHideFlags: 0
@@ -2020,7 +2020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9735f438c47ab84e9eb3b611b899e74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  medicinetype: 3
+  medicineType: 3
 --- !u!1 &1038989000 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 634214029421063518, guid: 2f9e43d1b968fc5418a66e59694ee93c, type: 3}
@@ -3045,7 +3045,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ef6fc6fb10e8d245bceac55f8f83761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
   isInvincible: 0
   weaponHolder: {fileID: 1954862383}
   weaponRadius: 0.75
@@ -3054,7 +3053,6 @@ MonoBehaviour:
   staffEffect: {fileID: 159982957}
   arrowPrefab: {fileID: 8305904277306762310, guid: 2550154ae605a8e408018a4e414acfdf, type: 3}
   magicPrefab: {fileID: 7289824235932626898, guid: a7210d5fac7704f4494e2802aa3f1dda, type: 3}
-  attackCooldown: 1
   HpBar: {fileID: 1087072282}
 --- !u!50 &1954862385
 Rigidbody2D:
@@ -3436,7 +3434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9735f438c47ab84e9eb3b611b899e74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  medicinetype: 5
+  medicineType: 5
 --- !u!1 &2136902830
 GameObject:
   m_ObjectHideFlags: 0
@@ -3452,7 +3450,7 @@ GameObject:
   - component: {fileID: 2136902831}
   - component: {fileID: 2136902836}
   m_Layer: 0
-  m_Name: downfullHPpostion
+  m_Name: DownHpPostion
   m_TagString: MagicItem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3623,7 +3621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9735f438c47ab84e9eb3b611b899e74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  medicinetype: 1
+  medicineType: 1
 --- !u!1001 &37866734746190868
 PrefabInstance:
   m_ObjectHideFlags: 0

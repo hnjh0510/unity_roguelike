@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public static float moveSpeed = 5f;
     public static float health =10f;//hp바 최대 체력
     public static float maxhealth = 10f;
     public static bool isInitialized = false; // 초기화 여부를 확인하는 변수
@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     public GameObject magicPrefab;
 
     // 공격 관련 변수
-    public float attackCooldown = 1f; // 공격 쿨다운 시간
+    public static float attackCooldown = 1f; // 공격 쿨다운 시간
     private bool isAttacking = false;
 
     public Slider HpBar;//hp바
@@ -157,6 +157,57 @@ public class Player : MonoBehaviour
         {
             PickUpWeapon(collision.gameObject);
         }
+        // MagicItem과의 충돌 감지
+        if (collision.gameObject.CompareTag("MagicItem"))
+        {
+            MagicItem magicItem = collision.gameObject.GetComponent<MagicItem>();
+            if (magicItem != null)
+            {
+                ApplyMagicEffect(magicItem);
+                Destroy(collision.gameObject); // 아이템 사용 후 제거
+            }
+        }
+    }
+    void ApplyMagicEffect(MagicItem magicItem)
+    {
+        switch (magicItem.medicineType)
+        {
+            case MagicItem.MedicineType.food:
+                // 음식을 먹으면 체력 증가
+                health = Mathf.Min(health + 1f, maxhealth); // 최대 체력을 초과하지 않도록
+                break;
+            case MagicItem.MedicineType.DownHpPotion:
+                // 체력 감소 포션
+                TakeDamage(2f);
+                break;
+            case MagicItem.MedicineType.UpHpPotion:
+                // 체력 증가 포션: 최대 체력 증가 및 현재 체력을 최대 체력에 맞게 증가
+                maxhealth += 5f; // 최대 체력을 증가
+                health += 5f; // 현재 체력을 증가
+                Debug.Log("현재 최대 체력:" + Player.maxhealth);
+                break;
+            case MagicItem.MedicineType.downShotSpeedscroll:
+                // 발사 속도 감소 스크롤
+                attackCooldown = Mathf.Min(attackCooldown + 0.1f, 3f); // 최대 쿨다운 제한
+                Debug.Log("현재 공격속도:" + Player.attackCooldown);
+                break;
+            case MagicItem.MedicineType.upShotSpeedscroll:
+                // 발사 속도 증가 스크롤
+                attackCooldown = Mathf.Max(attackCooldown - 0.1f, 0.5f); // 최소 쿨다운 제한
+                Debug.Log("현재 공격속도:" + Player.attackCooldown);
+                break;
+            case MagicItem.MedicineType.downSpeedscroll:
+                // 이동 속도 감소 스크롤
+                moveSpeed = Mathf.Max(moveSpeed - 1f, 1f); // 최소 속도 제한
+                Debug.Log("현재 이동속도:" + Player.moveSpeed);
+                break;
+            case MagicItem.MedicineType.upSpeedscroll:
+                // 이동 속도 증가 스크롤
+                moveSpeed = Mathf.Min(moveSpeed + 1f, 10f); // 최대 속도 제한
+                Debug.Log("현재 이동속도:" + Player.moveSpeed);
+                break;
+        }
+        CheckHp(); // 체력 업데이트
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
