@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     public float health;
 
     public GameObject bullet;
+    public GameObject[] magicItems; // 매직 아이템 프리팹 배열
 
     public float maxShotDelay;
     public float curShotDelay;
@@ -21,6 +22,8 @@ public class Enemy : MonoBehaviour
 
     public bool toMove;
     public GameObject isInside;
+    public bool isBig = false; // 공격 중인지 여부 체크
+
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -70,6 +73,15 @@ public class Enemy : MonoBehaviour
     }
     void Die()
     {
+        // 아이템 드랍 확률 (예: 50% 확률로 아이템 드랍)
+        float dropChance = 0.5f;
+        if (Random.value <= dropChance)
+        {
+            // 랜덤으로 아이템 선택
+            int randomIndex = Random.Range(0, magicItems.Length);
+            Instantiate(magicItems[randomIndex], transform.position, Quaternion.identity);
+        }
+
         // 적이 죽었을 때의 로직
         Destroy(gameObject);
     }
@@ -97,25 +109,39 @@ public class Enemy : MonoBehaviour
     {
         if (curShotDelay >= maxShotDelay)
         {
-            Vector3 dirVec = player.transform.position - transform.position;
-            Vector2 dirVec2D = new Vector2(dirVec.x, dirVec.y).normalized;
-            switch (enemyname)
-            {
-                case "A":
-                    // 타입 A의 공격 로직
-                    FireDirect(dirVec2D, 3);
-                    break;
-                case "B":
-                    // 타입 B는 총알을 발사하지 않고 속도 증가
-                    rigid.velocity = dirVec2D * speed * 2f;
-                    break;
-                case "C":
-                    // 타입 C의 공격 로직
-                    FireCircular();
-                    break;
-            }
-
-            curShotDelay = 0;
+                Vector3 dirVec = player.transform.position - transform.position;
+                Vector2 dirVec2D = new Vector2(dirVec.x, dirVec.y).normalized;
+                switch (enemyname)
+                { 
+                    case "A":
+                        // 타입 A의 공격 로직
+                        FireDirect(dirVec2D, 2);
+                        break;
+                    case "B":
+                        // 타입 B는 총알을 발사하지 않고 속도 증가
+                        rigid.velocity = dirVec2D * speed * 1.5f;
+                        break;
+                    case "C":
+                        // 타입 C의 공격 로직
+                        FireCircular();
+                        break;
+                    case "D":
+                        FireDirect2(dirVec2D, 2);
+                        break;
+                    case "E":
+                        rigid.velocity = dirVec2D * speed * 1.5f;
+                        Big();                    
+                        break;
+                    case "F":
+                        break;
+                    case "G":
+                        break;
+                    case "H":
+                        break;
+                    case "I":
+                        break;
+                }
+                curShotDelay = 0;
         }
     }
 
@@ -125,7 +151,22 @@ public class Enemy : MonoBehaviour
         Rigidbody2D bulletRigidbody = newBullet.GetComponent<Rigidbody2D>();
         bulletRigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
+    void FireDirect2(Vector2 direction, float force)
+    {
+        // 총알 발사 위치 오프셋 설정
+        Vector3 rightOffset = new Vector3(0.2f, 0, 0); // 오른쪽으로 약간 이동한 위치
+        Vector3 leftOffset = new Vector3(-0.2f, 0, 0); // 왼쪽으로 약간 이동한 위치
 
+        // 오른쪽 총알 발사
+        GameObject rightBullet = Instantiate(bullet, transform.position + rightOffset, Quaternion.identity);
+        Rigidbody2D rightBulletRigidbody = rightBullet.GetComponent<Rigidbody2D>();
+        rightBulletRigidbody.AddForce(direction * force, ForceMode2D.Impulse);
+
+        // 왼쪽 총알 발사
+        GameObject leftBullet = Instantiate(bullet, transform.position + leftOffset, Quaternion.identity);
+        Rigidbody2D leftBulletRigidbody = leftBullet.GetComponent<Rigidbody2D>();
+        leftBulletRigidbody.AddForce(direction * force, ForceMode2D.Impulse);
+    }
     void FireCircular()
     {
         int numberOfDirections = 2;
@@ -136,7 +177,15 @@ public class Enemy : MonoBehaviour
             Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
             GameObject newBullet = Instantiate(bullet, transform.position, Quaternion.Euler(0, 0, angle));
             Rigidbody2D bulletRigidbody = newBullet.GetComponent<Rigidbody2D>();
-            bulletRigidbody.velocity = direction * 3f;
+            bulletRigidbody.velocity = direction * 2f;
+        }
+    }
+    void Big()
+    {
+        if (!isBig) // 이미 커진 상태가 아니라면
+        {
+            transform.localScale = new Vector3(0.25f, 0.25f, 0.25f); // 다른걸로 고쳐야됨
+            isBig = true; // 커진 상태로 설정
         }
     }
     void OnCollisionEnter2D(Collision2D collision)

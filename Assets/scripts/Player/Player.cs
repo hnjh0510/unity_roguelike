@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     public GameObject magicPrefab;
 
     // 공격 관련 변수
-    public static float attackCooldown = 1f; // 공격 쿨다운 시간
+    public static float attackCooldown = 2f; // 공격 쿨다운 시간
     private bool isAttacking = false;
 
     public Slider HpBar;//hp바
@@ -188,12 +188,12 @@ public class Player : MonoBehaviour
                 break;
             case MagicItem.MedicineType.downShotSpeedscroll:
                 // 발사 속도 감소 스크롤
-                attackCooldown = Mathf.Min(attackCooldown + 0.1f, 3f); // 최대 쿨다운 제한
+                attackCooldown = Mathf.Min(attackCooldown + 0.2f, 3f); // 최대 쿨다운 제한
                 Debug.Log("현재 공격속도:" + Player.attackCooldown);
                 break;
             case MagicItem.MedicineType.upShotSpeedscroll:
                 // 발사 속도 증가 스크롤
-                attackCooldown = Mathf.Max(attackCooldown - 0.1f, 0.5f); // 최소 쿨다운 제한
+                attackCooldown = Mathf.Max(attackCooldown - 0.2f, 0.5f); // 최소 쿨다운 제한
                 Debug.Log("현재 공격속도:" + Player.attackCooldown);
                 break;
             case MagicItem.MedicineType.downSpeedscroll:
