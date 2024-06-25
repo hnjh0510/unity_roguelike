@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Wall")||collision.CompareTag("Door"))
+        if (collision.CompareTag("Wall") || collision.CompareTag("Door"))
         {
             Destroy(gameObject);
         }
@@ -29,11 +29,13 @@ public class Bullet : MonoBehaviour
         else if (collision.CompareTag("Boss"))
         {
             Boss boss = collision.GetComponent<Boss>();
-            if(boss != null)
+            if (boss != null)
             {
-                boss.TakeDamage(dmg);
+                Vector2 knockbackDirection = (boss.transform.position - transform.position).normalized;
+                float knockbackForce = 2f; // 밀리는 힘 설정
+                boss.TakeDamage(dmg, knockbackDirection, knockbackForce);
             }
-            Destroy (gameObject);
+            Destroy(gameObject);
         }
     }
 }

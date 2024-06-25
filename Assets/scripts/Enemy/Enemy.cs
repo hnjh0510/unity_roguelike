@@ -72,8 +72,8 @@ public class Enemy : MonoBehaviour
     }
     void Die()
     {
-        // 아이템 드랍 확률 (예: 50% 확률로 아이템 드랍)
-        float dropChance = 0.5f;
+        // 아이템 드랍 확률
+        float dropChance = 0.1f;
         if (Random.value <= dropChance)
         {
             // 랜덤으로 아이템 선택

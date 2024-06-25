@@ -21,7 +21,9 @@ public class Sword : MonoBehaviour
             Boss boss = collision.GetComponent<Boss>();
             if (boss != null)
             {
-                boss.TakeDamage(dmg);
+                Vector2 knockbackDirection = (boss.transform.position - transform.position).normalized;
+                float knockbackForce = 2f; // 밀리는 힘 설정
+                boss.TakeDamage(dmg, knockbackDirection, knockbackForce);
             }
         }
     }
