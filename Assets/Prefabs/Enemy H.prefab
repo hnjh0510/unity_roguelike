@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3014276133531319362}
   - component: {fileID: 8922680004757984165}
   m_Layer: 0
-  m_Name: Enemy B
+  m_Name: Enemy H
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -272,9 +272,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594e770153814324db47aecad0a5809b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyname: B
-  speed: 1
-  health: 3
+  enemyname: H
+  speed: 1.5
+  health: 12
   bullet: {fileID: 4203843871973806164, guid: 4e50d7c1ef3b6ab4a8d68b8ad5b6d20c, type: 3}
   magicItems:
   - {fileID: 9106824402896457081, guid: 3a3fd5dc94550f7429d1a0874bc8f086, type: 3}
@@ -284,12 +284,11 @@ MonoBehaviour:
   - {fileID: 2912179916628474764, guid: fc410a8c70aad1e4a9a7fb8303091dc9, type: 3}
   - {fileID: 2149010271936397172, guid: 33bb5a19de1403f419aa95c6048d4d68, type: 3}
   - {fileID: 2712719575327944649, guid: fd2353560995db34bbc415b471ab035f, type: 3}
-  maxShotDelay: 0
+  maxShotDelay: 3
   curShotDelay: 0
   player: {fileID: 0}
   toMove: 0
   isInside: {fileID: 0}
-  isBig: 0
 --- !u!95 &8922680004757984165
 Animator:
   serializedVersion: 5

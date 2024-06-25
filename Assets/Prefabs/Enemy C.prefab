@@ -236,7 +236,7 @@ MonoBehaviour:
   - {fileID: 2912179916628474764, guid: fc410a8c70aad1e4a9a7fb8303091dc9, type: 3}
   - {fileID: 2149010271936397172, guid: 33bb5a19de1403f419aa95c6048d4d68, type: 3}
   - {fileID: 2712719575327944649, guid: fd2353560995db34bbc415b471ab035f, type: 3}
-  maxShotDelay: 2
+  maxShotDelay: 3
   curShotDelay: 0
   player: {fileID: 0}
   toMove: 0

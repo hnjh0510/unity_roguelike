@@ -1178,9 +1178,9 @@ MonoBehaviour:
   entrance: {fileID: 1038989000}
   box: {fileID: 815978207}
   enemy:
-  - {fileID: 6503500876433208205, guid: 344cfb92201df4642be679205e2c554c, type: 3}
-  - {fileID: 7804414783793245351, guid: 5049b810eaa4556479008a371a9f4caf, type: 3}
-  - {fileID: 647306914517389620, guid: 9a22dd59f0331ec4fa97abd23039174e, type: 3}
+  - {fileID: 6503500876433208205, guid: a67991621cc0dae4aa86d084864f3cdf, type: 3}
+  - {fileID: 7804414783793245351, guid: 954f269fc77d7d44aa6ee6eb97d2239d, type: 3}
+  - {fileID: 647306914517389620, guid: cb5386ac1c5c3874fa3d7af2c9f2f6fd, type: 3}
   roomSpace: []
   _roomSpace: []
   roomCheck: 

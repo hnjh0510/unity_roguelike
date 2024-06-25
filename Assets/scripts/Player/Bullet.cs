@@ -6,6 +6,10 @@ public class Bullet : MonoBehaviour
 {
     public float dmg;
 
+    void Start()
+    {
+        Destroy(gameObject, 10f);
+    }
     void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Wall")||collision.CompareTag("Door"))

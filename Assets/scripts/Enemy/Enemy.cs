@@ -22,7 +22,6 @@ public class Enemy : MonoBehaviour
 
     public bool toMove;
     public GameObject isInside;
-    public bool isBig = false; // 공격 중인지 여부 체크
 
     void Awake()
     {
@@ -114,31 +113,41 @@ public class Enemy : MonoBehaviour
                 switch (enemyname)
                 { 
                     case "A":
-                        // 타입 A의 공격 로직
-                        FireDirect(dirVec2D, 2);
+                        // 한발 공격
+                        FireDirect(dirVec2D, 2f);
                         break;
                     case "B":
                         // 타입 B는 총알을 발사하지 않고 속도 증가
                         rigid.velocity = dirVec2D * speed * 1.5f;
                         break;
                     case "C":
-                        // 타입 C의 공격 로직
-                        FireCircular();
+                        // 양옆으로 발사
+                        FireRightandLeft();
                         break;
                     case "D":
-                        FireDirect2(dirVec2D, 2);
+                        //두발 발사
+                        FireDirect2(dirVec2D, 2.5f);
                         break;
                     case "E":
-                        rigid.velocity = dirVec2D * speed * 1.5f;
-                        Big();                    
+                        // 빠르게가면서 공격 발사
+                        rigid.velocity = dirVec2D * speed * 1.7f;
+                        FireDirect(dirVec2D, 4);
                         break;
                     case "F":
+                        //4방향 발사
+                        FireInFourDirections();
                         break;
                     case "G":
+                        //세발 발사
+                        FireDirect3(dirVec2D, 3f);
                         break;
                     case "H":
+                        //커지면서 터짐(사라짐)
+                        StartCoroutine(Boom());
                         break;
                     case "I":
+                        // 4방향으로 나가면서 회전 10초뒤 사라짐
+                        FireInFourDirections2();
                         break;
                 }
                 curShotDelay = 0;
@@ -151,11 +160,11 @@ public class Enemy : MonoBehaviour
         Rigidbody2D bulletRigidbody = newBullet.GetComponent<Rigidbody2D>();
         bulletRigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
+
     void FireDirect2(Vector2 direction, float force)
     {
-        // 총알 발사 위치 오프셋 설정
-        Vector3 rightOffset = new Vector3(0.2f, 0, 0); // 오른쪽으로 약간 이동한 위치
-        Vector3 leftOffset = new Vector3(-0.2f, 0, 0); // 왼쪽으로 약간 이동한 위치
+        Vector3 rightOffset = new Vector3(0.2f, 0, 0); // 오른쪽
+        Vector3 leftOffset = new Vector3(-0.2f, 0, 0); // 왼쪽
 
         // 오른쪽 총알 발사
         GameObject rightBullet = Instantiate(bullet, transform.position + rightOffset, Quaternion.identity);
@@ -167,7 +176,40 @@ public class Enemy : MonoBehaviour
         Rigidbody2D leftBulletRigidbody = leftBullet.GetComponent<Rigidbody2D>();
         leftBulletRigidbody.AddForce(direction * force, ForceMode2D.Impulse);
     }
-    void FireCircular()
+
+    void FireDirect3(Vector2 direction, float force)
+    {
+        Vector3 rightOffset = new Vector3(0.2f, 0, 0); // 오른쪽
+        Vector3 leftOffset = new Vector3(-0.2f, 0, 0); // 왼쪽
+
+        // 중간 총알 발사
+        GameObject middleBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+        Rigidbody2D middleBulletRigidbody = middleBullet.GetComponent<Rigidbody2D>();
+        middleBulletRigidbody.AddForce(direction * force, ForceMode2D.Impulse);
+
+        // 각도 계산
+        float angle = 15f * Mathf.Deg2Rad;
+
+        // 오른쪽 총알 발사
+        Vector2 rightDirection = new Vector2(
+            direction.x * Mathf.Cos(angle) - direction.y * Mathf.Sin(angle),
+            direction.x * Mathf.Sin(angle) + direction.y * Mathf.Cos(angle)
+        );
+        GameObject rightBullet = Instantiate(bullet, transform.position + rightOffset, Quaternion.identity);
+        Rigidbody2D rightBulletRigidbody = rightBullet.GetComponent<Rigidbody2D>();
+        rightBulletRigidbody.AddForce(rightDirection * force, ForceMode2D.Impulse);
+
+        // 왼쪽 총알 발사
+        Vector2 leftDirection = new Vector2(
+            direction.x * Mathf.Cos(-angle) - direction.y * Mathf.Sin(-angle),
+            direction.x * Mathf.Sin(-angle) + direction.y * Mathf.Cos(-angle)
+        );
+        GameObject leftBullet = Instantiate(bullet, transform.position + leftOffset, Quaternion.identity);
+        Rigidbody2D leftBulletRigidbody = leftBullet.GetComponent<Rigidbody2D>();
+        leftBulletRigidbody.AddForce(leftDirection * force, ForceMode2D.Impulse);
+    }
+
+    void FireRightandLeft()
     {
         int numberOfDirections = 2;
         float angleStep = 360f / numberOfDirections;
@@ -180,14 +222,69 @@ public class Enemy : MonoBehaviour
             bulletRigidbody.velocity = direction * 2f;
         }
     }
-    void Big()
+    void FireInFourDirections()
     {
-        if (!isBig) // 이미 커진 상태가 아니라면
+        Vector2[] directions = new Vector2[]
         {
-            transform.localScale = new Vector3(0.25f, 0.25f, 0.25f); // 다른걸로 고쳐야됨
-            isBig = true; // 커진 상태로 설정
+        Vector2.up,
+        Vector2.down,
+        Vector2.left,
+        Vector2.right
+        };
+
+        foreach (Vector2 direction in directions)
+        {
+            GameObject newBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+            Rigidbody2D bulletRigidbody = newBullet.GetComponent<Rigidbody2D>();
+            bulletRigidbody.velocity = direction * 2.5f;
         }
     }
+
+    void FireInFourDirections2()
+    {
+        // 네 개의 방향 벡터를 정의합니다: 상, 하, 좌, 우
+        Vector2[] directions = new Vector2[]
+        {
+            Vector2.up,
+            Vector2.down,
+            Vector2.left,
+            Vector2.right
+        };
+
+        for (int i = 0; i < directions.Length; i++)
+        {
+            GameObject newBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+            Rigidbody2D bulletRigidbody = newBullet.GetComponent<Rigidbody2D>();
+
+            //총알 초기 속도 설정
+            bulletRigidbody.velocity = directions[i] * 3f;
+
+            RotatingBullet rotatingBullet = newBullet.AddComponent<RotatingBullet>();
+            rotatingBullet.speed = 3; // 초기 속도 설정
+            rotatingBullet.rotationSpeed = 60f; // 회전 속도 설정
+        }
+    }
+    IEnumerator Boom()
+    {
+        // 크기를 점진적으로 증가시키기
+        float scaleIncreaseDuration = 1f; // 크기가 증가하는 시간
+        Vector3 initialScale = transform.localScale;
+        Vector3 finalScale = initialScale * 2; // 두 배 크기로 증가
+
+        float elapsed = 0f;
+        while (elapsed < scaleIncreaseDuration)
+        {
+            transform.localScale = Vector3.Lerp(initialScale, finalScale, elapsed / scaleIncreaseDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // 최종 크기로 설정
+        transform.localScale = finalScale;
+
+        Destroy(gameObject);
+    }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
         Player player = collision.gameObject.GetComponent<Player>();
