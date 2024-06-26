@@ -43,6 +43,8 @@ public class MakeRandomMap : MonoBehaviour
     private int beforeCount;//이전 바닥갯수
     private int floorCount;//지금 바닥갯수
 
+    public GameObject boss;
+
 
     private void Start()
     {
@@ -80,13 +82,25 @@ public class MakeRandomMap : MonoBehaviour
         roomSpace.RemoveAt(pRand);//roomSpace에서 플레이어가있는방을 뺌
         roomCheck.RemoveAt(pRand);
 
-        int exitRand = Random.Range(0, roomSpace.Count);//다음으로 넘어가는 포탈 위치 랜덤
-        entrance.transform.position = (Vector2)roomSpace[exitRand].Center();////위치 옮김
-        //RoomSize[exitRand] = 0;//포탈이 있는 방의 바닥갯수 0으로만듬
-        RoomSize.RemoveAt(exitRand);
-        roomSpace.RemoveAt(exitRand);//리스트에서 지움
-        roomCheck.RemoveAt(exitRand);
-
+        if (boss == null)
+        {
+            int exitRand = Random.Range(0, roomSpace.Count);//다음으로 넘어가는 포탈 위치 랜덤
+            entrance.transform.position = (Vector2)roomSpace[exitRand].Center();////위치 옮김
+                                                                                //RoomSize[exitRand] = 0;//포탈이 있는 방의 바닥갯수 0으로만듬
+            RoomSize.RemoveAt(exitRand);
+            roomSpace.RemoveAt(exitRand);//리스트에서 지움
+            roomCheck.RemoveAt(exitRand);
+        }
+        else
+        {
+            int exitRand = Random.Range(0, roomSpace.Count);//다음으로 넘어가는 포탈 위치 랜덤
+            boss.transform.position = (Vector2)roomSpace[exitRand].Center();////위치 옮김
+                                                                                //RoomSize[exitRand] = 0;//포탈이 있는 방의 바닥갯수 0으로만듬
+            RoomSize.RemoveAt(exitRand);
+            roomSpace.RemoveAt(exitRand);//리스트에서 지움
+            roomCheck.RemoveAt(exitRand);
+            Destroy(entrance);
+        }
         int boxRand = Random.Range(0, roomSpace.Count);//상자 위치 랜덤
         box.transform.position = (Vector2)roomSpace[boxRand].Center();//위치옮김
         //RoomSize[boxRand] = 0;//상자가 있는 곳 타일갯수 0으로만듬

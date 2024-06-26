@@ -14,6 +14,7 @@ TagManager:
   - MagicItem
   - HpBar
   - es
+  - isboss
   layers:
   - Default
   - TransparentFX
