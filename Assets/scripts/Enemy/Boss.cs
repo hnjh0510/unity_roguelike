@@ -17,6 +17,11 @@ public class Boss : MonoBehaviour
     Animator anim;
     Rigidbody2D rigid;
 
+    public bool toMove;
+    public GameObject isInside;
+
+    public GameObject potal;
+
     private Dictionary<string, List<int>> enemyPatterns = new Dictionary<string, List<int>>();  // 각 보스 유형별 패턴 저장
     public int currentPatternIndex = 0;  // 현재 패턴 인덱스
     private List<int> currentPatterns;  // 현재 보스의 패턴 목록
@@ -83,15 +88,26 @@ public class Boss : MonoBehaviour
             directionChangeTimer = directionChangeInterval;
         }
 
-        patternChangeTimer -= Time.deltaTime;
-        if (patternChangeTimer <= 0)
+        if (isInside != null)
         {
-            currentPatternIndex = (currentPatternIndex + 1) % currentPatterns.Count;  // 패턴 인덱스 업데이트
-            patternChangeTimer = patternChangeInterval;  // 패턴 변경 타이머 리셋
+            IsInside tomove = isInside.GetComponent<IsInside>();
+            if (tomove != null)
+            {
+                toMove = tomove.emove;
+            }
         }
+        if (toMove)
+        {
+            patternChangeTimer -= Time.deltaTime;
+            if (patternChangeTimer <= 0)
+            {
+                currentPatternIndex = (currentPatternIndex + 1) % currentPatterns.Count;  // 패턴 인덱스 업데이트
+                patternChangeTimer = patternChangeInterval;  // 패턴 변경 타이머 리셋
+            }
 
-        ExecutePattern(currentPatterns[currentPatternIndex]);  // 현재 패턴 실행
-        Reload();
+            ExecutePattern(currentPatterns[currentPatternIndex]);  // 현재 패턴 실행
+            Reload();
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -132,6 +148,8 @@ public class Boss : MonoBehaviour
     {
         // 적이 죽었을 때의 로직
         Destroy(gameObject);
+
+        Instantiate(potal, transform.position, Quaternion.identity);
     }
 
     Vector3 GetRandomDirection()
@@ -370,5 +388,10 @@ public class Boss : MonoBehaviour
     void Reload()
     {
         curShotDelay += Time.deltaTime;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        isInside = collision.gameObject;
     }
 }

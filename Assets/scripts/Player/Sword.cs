@@ -11,19 +11,16 @@ public class Sword : MonoBehaviour
         if(collision.CompareTag("Enemy"))
         {
             Enemy enemy = collision.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(dmg);
-            }
-        }
-        else if (collision.CompareTag("Boss"))
-        {
             Boss boss = collision.GetComponent<Boss>();
             if (boss != null)
             {
                 Vector2 knockbackDirection = (boss.transform.position - transform.position).normalized;
                 float knockbackForce = 2f; // 밀리는 힘 설정
                 boss.TakeDamage(dmg, knockbackDirection, knockbackForce);
+            }
+            else if (enemy != null)
+            {
+                enemy.TakeDamage(dmg);
             }
         }
     }

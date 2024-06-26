@@ -20,20 +20,16 @@ public class Bullet : MonoBehaviour
         {
             // 적에게 데미지를 입힘
             Enemy enemy = collision.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(dmg);
-            }
-            Destroy(gameObject);
-        }
-        else if (collision.CompareTag("Boss"))
-        {
             Boss boss = collision.GetComponent<Boss>();
             if (boss != null)
             {
                 Vector2 knockbackDirection = (boss.transform.position - transform.position).normalized;
                 float knockbackForce = 2f; // 밀리는 힘 설정
                 boss.TakeDamage(dmg, knockbackDirection, knockbackForce);
+            }
+            else if (enemy != null)
+            {
+                enemy.TakeDamage(dmg);
             }
             Destroy(gameObject);
         }

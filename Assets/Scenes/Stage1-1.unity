@@ -1575,11 +1575,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6445666186361868708, guid: 9deea548c44c9ac4e94d6932a0d85eaf, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 6445666186361868708, guid: 9deea548c44c9ac4e94d6932a0d85eaf, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 6445666186361868708, guid: 9deea548c44c9ac4e94d6932a0d85eaf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2004,6 +2004,7 @@ MonoBehaviour:
   roomCheck: 
   isinside: {fileID: 221735860475352379, guid: b704d38d31a97784fa280e65d47bcad6, type: 3}
   RoomSize: 
+  boss: {fileID: 0}
 --- !u!4 &1771439973
 Transform:
   m_ObjectHideFlags: 0
