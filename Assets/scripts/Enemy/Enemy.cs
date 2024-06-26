@@ -100,7 +100,7 @@ public class Enemy : MonoBehaviour
         if (dirVec2D.x != 0)
         {
             // localScale.x를 dirVec2D.x의 부호에 따라 조정하여 왼쪽이나 오른쪽을 바라보게 함
-            transform.localScale = new Vector3(Mathf.Sign(dirVec2D.x)*(0.15f), 0.15f, 0.15f);
+            transform.localScale = new Vector3(Mathf.Sign(dirVec2D.x) * (0.15f), 0.15f, 0.15f);
         }
     }
 
@@ -108,49 +108,47 @@ public class Enemy : MonoBehaviour
     {
         if (curShotDelay >= maxShotDelay)
         {
-                Vector3 dirVec = player.transform.position - transform.position;
-                Vector2 dirVec2D = new Vector2(dirVec.x, dirVec.y).normalized;
-                switch (enemyname)
-                { 
-                    case "A":
-                        // 한발 공격
-                        FireDirect(dirVec2D, 2f);
-                        break;
-                    case "B":
-                        // 타입 B는 총알을 발사하지 않고 속도 증가
-                        rigid.velocity = dirVec2D * speed * 1.5f;
-                        break;
-                    case "C":
-                        // 양옆으로 발사
-                        FireRightandLeft();
-                        break;
-                    case "D":
-                        //두발 발사
-                        FireDirect2(dirVec2D, 2.5f);
-                        break;
-                    case "E":
-                        // 빠르게가면서 공격 발사
-                        rigid.velocity = dirVec2D * speed * 1.7f;
-                        FireDirect(dirVec2D, 4);
-                        break;
-                    case "F":
-                        //4방향 발사
-                        FireInFourDirections();
-                        break;
-                    case "G":
-                        //세발 발사
-                        FireDirect3(dirVec2D, 3f);
-                        break;
-                    case "H":
-                        //커지면서 터짐(사라짐)
-                        StartCoroutine(Boom());
-                        break;
-                    case "I":
-                        // 4방향으로 나가면서 회전 10초뒤 사라짐
-                        FireInFourDirections2();
-                        break;
-                }
-                curShotDelay = 0;
+            Vector3 dirVec = player.transform.position - transform.position;
+            Vector2 dirVec2D = new Vector2(dirVec.x, dirVec.y).normalized;
+            switch (enemyname)
+            {
+                case "A":
+                    // 한발 공격
+                    FireDirect(dirVec2D, 2f);
+                    break;
+                case "B":
+                    // 타입 B는 총알을 발사하지 않고 속도 증가
+                    rigid.velocity = dirVec2D * speed * 1.5f;
+                    break;
+                case "C":
+                    // 양옆으로 발사
+                    FireRightandLeft();
+                    break;
+                case "D":
+                    //두발 발사
+                    FireDirect2(dirVec2D, 2.5f);
+                    break;
+                case "E":
+                    RushAndShoot();
+                    break;
+                case "F":
+                    //4방향 발사
+                    FireInFourDirections();
+                    break;
+                case "G":
+                    //세발 발사
+                    FireDirect3(dirVec2D, 3f);
+                    break;
+                case "H":
+                    //커지면서 터짐(사라짐)
+                    StartCoroutine(Boom());
+                    break;
+                case "I":
+                    // 4방향으로 나가면서 회전 10초뒤 사라짐
+                    FireInFourDirections2();
+                    break;
+            }
+            curShotDelay = 0;
         }
     }
 
@@ -239,7 +237,25 @@ public class Enemy : MonoBehaviour
             bulletRigidbody.velocity = direction * 2.5f;
         }
     }
+    void RushAndShoot()
+    {
+        // 플레이어를 향한 방향 계산
+        Vector3 directionToPlayer = player.transform.position - transform.position;
+        Vector2 normalizedDirection = directionToPlayer.normalized;
 
+        // 기본 속도의 1.7배로 움직임
+        rigid.velocity = new Vector2(normalizedDirection.x, normalizedDirection.y) * speed * 1.7f;
+
+        // 발사 시간이 되었을 때 총알을 플레이어를 향해 발사
+        if (curShotDelay >= maxShotDelay)
+        {
+            GameObject newBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+            Rigidbody2D bulletRigidbody = newBullet.GetComponent<Rigidbody2D>();
+            bulletRigidbody.AddForce(normalizedDirection * 2.5f, ForceMode2D.Impulse);
+
+            curShotDelay = 0; // 발사 후 딜레이 초기화
+        }
+    }
     void FireInFourDirections2()
     {
         // 네 개의 방향 벡터를 정의합니다: 상, 하, 좌, 우
