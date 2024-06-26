@@ -44,6 +44,7 @@ public class MakeRandomMap : MonoBehaviour
     private int floorCount;//지금 바닥갯수
 
     public GameObject boss;
+    public GameObject startWeapon;
     
 
     private void Start()
@@ -74,15 +75,27 @@ public class MakeRandomMap : MonoBehaviour
         spreadTilemap.SpreadFloorTilemap(floor);//floor타일 깔기
         spreadTilemap.SpreadWallTilemap(wall);//wall타일 깔기
 
-        
-        int pRand = Random.Range(0, roomSpace.Count);//플레이어 위치 랜덤
-        player.transform.position = (Vector2)roomSpace[pRand].Center();//위치를 옮김
-        //기본무기 추가
-        //RoomSize[pRand] = 0;//플레이어가 있는방의 바닥타일갯수를 0으로 만듬(적을 생성하지 않게하기 위해)
-        RoomSize.RemoveAt(pRand);
-        roomSpace.RemoveAt(pRand);//roomSpace에서 플레이어가있는방을 뺌
-        roomCheck.RemoveAt(pRand);
-        
+
+        if (startWeapon != null)
+        {
+            int pRand = Random.Range(0, roomSpace.Count);//플레이어 위치 랜덤
+            player.transform.position = (Vector2)roomSpace[pRand].Center();//위치를 옮김
+            startWeapon.transform.position = (Vector2)roomSpace[pRand].Center();
+            //RoomSize[pRand] = 0;//플레이어가 있는방의 바닥타일갯수를 0으로 만듬(적을 생성하지 않게하기 위해)
+            RoomSize.RemoveAt(pRand);
+            roomSpace.RemoveAt(pRand);//roomSpace에서 플레이어가있는방을 뺌
+            roomCheck.RemoveAt(pRand);
+        }
+        else
+        {
+            int pRand = Random.Range(0, roomSpace.Count);//플레이어 위치 랜덤
+            player.transform.position = (Vector2)roomSpace[pRand].Center();//위치를 옮김
+            
+            //RoomSize[pRand] = 0;//플레이어가 있는방의 바닥타일갯수를 0으로 만듬(적을 생성하지 않게하기 위해)
+            RoomSize.RemoveAt(pRand);
+            roomSpace.RemoveAt(pRand);//roomSpace에서 플레이어가있는방을 뺌
+            roomCheck.RemoveAt(pRand);
+        }
         
 
         if (boss == null)
