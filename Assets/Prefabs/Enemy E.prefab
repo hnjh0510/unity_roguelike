@@ -273,7 +273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyname: E
-  speed: 1
+  speed: 1.7
   health: 6
   bullet: {fileID: 4203843871973806164, guid: 4e50d7c1ef3b6ab4a8d68b8ad5b6d20c, type: 3}
   magicItems:
